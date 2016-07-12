@@ -1,0 +1,23 @@
+Welcome!
+
+SaveStuff (better name may come in the future) is a simple file format and parser.
+
+An example of the file format can be found in testin.svstf.
+
+I recommend the file extension "svstf" for files using SaveStuff, but obviously any extension can be used.
+
+Currently, the only build system I officially support is Ubuntu (specifically 16.04), but it should be possible to build this library on any decent operating system without modification to the code itself.
+
+To build the demo, run "make demo"
+
+To test the demo, run "make test" or ./savestuff
+
+To run the demo with gdb, run "make debug" or gdb savestuff
+
+To build a shared library (libsavestuff.so), run "make"
+
+SaveStuff is licensed under MIT, so you're welcome to integrate this into your projects or to fork/expand the library.
+
+SaveStuff uses boost::variant, so that portion of the library is licensed under the Boost license. In the future, I may get rid of the dependency of Boost.
+
+There is no formal documentation yet, but the header file (variable.hpp) combined with the demo (demo.cpp) should be sufficiently documented to determine what to do.

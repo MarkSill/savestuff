@@ -1,0 +1,23 @@
+//Comments are made by using traditional C syntax (two slashes).
+//They can be used at the end of any line. All text after the slashes is part of the comment.
+//Comments are completely ignored by the parser, and as such will not be seen in the output file.
+simpleval = 5.2 //Numbers are quite simple to use, as can be seen here.
+another_val = "5.2a" //Strings are defined using quotation marks ("").
+a_char = '@' //Single characters are differentiated from regular strings using single quotation marks.
+boolean = true //Booleans can be used, as can be seen here, using the values true and false.
+another_boolean = false
+nullval = null //A variable can also be defined as null, if needed.
+a_table = { //Tables are started using the "{" character.
+	"first" //Elements can be indexed by number (like in an array) by omitting the variable name.
+	"second"
+	test = "a test" //A table's elements can alternatively be named, if needed.
+	"third"
+	{ //You can also nest tables.
+		"This is another table."
+	}
+}
+
+//Variables can also have wonky (by normal standards) names as a result of permissive naming.
+//Personally, I would recommend NOT using names similar to the following:
+Does this work? = "hello"
+32---- fgewg44 34t  fds/.?<?.,#@%)1473523 = "hello again"
