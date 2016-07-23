@@ -238,6 +238,22 @@ namespace savestuff {
 		out.close();
 	}
 
+	double Variable::asDouble() {
+		return boost::get<double>(data);
+	}
+
+	std::string Variable::asString() {
+		return boost::get<std::string>(data);
+	}
+
+	char Variable::asChar() {
+		return boost::get<char>(data);
+	}
+
+	bool Variable::asBool() {
+		return boost::get<bool>(data);
+	}
+
 	Variable* Variable::operator[](Variable *key) const {
 		return at(key);
 	}

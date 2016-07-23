@@ -52,6 +52,11 @@ namespace savestuff {
 		void loadFromFile(const std::string &filename);
 		//Saves the environment to a file.
 		void saveToFile(const std::string &filename);
+		//Gets the variable as the given type.
+		double asDouble();
+		std::string asString();
+		char asChar();
+		bool asBool();
 		//See at(Variable*) const.
 		Variable* operator[](Variable *key) const;
 		Variable* operator[](double num) const;
