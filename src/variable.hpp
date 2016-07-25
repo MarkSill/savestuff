@@ -70,6 +70,7 @@ namespace savestuff {
 		Variable* operator[](Variable *key) const;
 		Variable* operator[](double num) const;
 		Variable* operator[](std::string str) const;
+		Variable* operator[](const char *ch) const;
 		//Evaluates variables. Note that strings that .compare to 0 will match.
 		bool operator==(const Variable &other) const;
 		bool operator==(double num) const;
@@ -89,6 +90,32 @@ namespace savestuff {
 		bool operator>(double num) const;
 		bool operator<=(double num) const;
 		bool operator>=(double num) const;
+		Variable operator+(const Variable &other) const;
+		Variable operator+(double num) const;
+		Variable operator+(std::string str) const;
+		Variable operator-(const Variable &other) const;
+		Variable operator-(double num) const;
+		Variable operator*(const Variable &other) const;
+		Variable operator*(double num) const;
+		Variable operator/(const Variable &other) const;
+		Variable operator/(double num) const;
+		Variable& operator+=(const Variable &other);
+		Variable& operator+=(double num);
+		Variable& operator+=(const std::string str);
+		Variable& operator-=(const Variable &other);
+		Variable& operator-=(double num);
+		Variable& operator*=(const Variable &other);
+		Variable& operator*=(double num);
+		Variable& operator/=(const Variable &other);
+		Variable& operator/=(double num);
+		Variable& operator++();
+		Variable operator++(int unused);
+		Variable& operator--();
+		Variable operator--(int unused);
+		operator double() const;
+		operator std::string() const;
+		operator char() const;
+		operator bool() const;
 		//Allows for printing to streams more easily.
 		friend std::ostream& operator<<(std::ostream &stream, const Variable &var);
 	protected:

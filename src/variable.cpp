@@ -331,6 +331,10 @@ namespace savestuff {
 		return at(str);
 	}
 
+	Variable* Variable::operator[](const char *ch) const {
+		return at(std::string(ch));
+	}
+
 	bool Variable::operator==(const Variable &other) const {
 		return compare(other);
 	}
@@ -413,6 +417,230 @@ namespace savestuff {
 			return asDouble() >= num;
 		}
 		return false;
+	}
+
+	Variable Variable::operator+(const Variable &other) const {
+		Variable var(type);
+		if (type == NUMBER && other.type == NUMBER) {
+			var.set(asDouble() + other.asDouble());
+		} else if (type == STRING) {
+			var.set(asString() + other.toString());
+		}
+		var.set(NIL, false);
+		return var;
+	}
+
+	Variable Variable::operator+(double num) const {
+		Variable var(type);
+		if (type == NUMBER) {
+			var.set(NUMBER, asDouble() + num);
+		} else if (type == STRING) {
+			std::stringstream ss("");
+			ss << num;
+			var.set(STRING, asString() + ss.str());
+		} else {
+			var.set(NIL, false);
+		}
+		return var;
+	}
+
+	Variable Variable::operator+(std::string str) const {
+		Variable var(STRING);
+		if (type == STRING) {
+			var.set(asString() + str);
+		} else {
+			var.set(NIL, false);
+		}
+		return var;
+	}
+
+	Variable Variable::operator-(const Variable &other) const {
+		Variable var(NUMBER);
+		if (type == NUMBER && other.type == NUMBER) {
+			var.set(asDouble() - other.asDouble());
+		} else {
+			var.set(NIL, false);
+		}
+		return var;
+	}
+
+	Variable Variable::operator-(double num) const {
+		Variable var(NUMBER);
+		if (type == NUMBER) {
+			var.set(asDouble() - num);
+		} else {
+			var.set(NIL, false);
+		}
+		return var;
+	}
+
+	Variable Variable::operator*(const Variable &other) const {
+		Variable var(NUMBER);
+		if (type == NUMBER && other.type == NUMBER) {
+			var.set(asDouble() * other.asDouble());
+		} else {
+			var.set(NIL, false);
+		}
+		return var;
+	}
+
+	Variable Variable::operator*(double num) const {
+		Variable var(NUMBER);
+		if (type == NUMBER) {
+			var.set(asDouble() * num);
+		} else {
+			var.set(NIL, false);
+		}
+		return var;
+	}
+
+	Variable Variable::operator/(const Variable &other) const {
+		Variable var(NUMBER);
+		if (type == NUMBER && other.type == NUMBER) {
+			var.set(asDouble() / other.asDouble());
+		} else {
+			var.set(NIL, false);
+		}
+		return var;
+	}
+
+	Variable Variable::operator/(double num) const {
+		Variable var(NUMBER);
+		if (type == NUMBER) {
+			var.set(asDouble() / num);
+		} else {
+			var.set(NIL, false);
+		}
+		return var;
+	}
+
+	Variable& Variable::operator+=(const Variable &other) {
+		if (type == NUMBER && other.type == NUMBER) {
+			set(asDouble() + other.asDouble());
+		} else if (type == STRING) {
+			set(asString() + other.toString());
+		} else {
+			set(NIL, false);
+		}
+		return *this;
+	}
+
+	Variable& Variable::operator+=(double num) {
+		if (type == NUMBER) {
+			set(asDouble() + num);
+		} else {
+			set(NIL, false);
+		}
+		return *this;
+	}
+
+	Variable& Variable::operator+=(const std::string str) {
+		if (type == STRING) {
+			set(asString() + str);
+		} else {
+			set(NIL, false);
+		}
+		return *this;
+	}
+
+	Variable& Variable::operator-=(const Variable &other) {
+		if (type == NUMBER && other.type == NUMBER) {
+			set(asDouble() - other.asDouble());
+		} else {
+			set(NIL, false);
+		}
+		return *this;
+	}
+
+	Variable& Variable::operator-=(double num) {
+		if (type == NUMBER) {
+			set(asDouble() - num);
+		} else {
+			set(NIL, false);
+		}
+		return *this;
+	}
+
+	Variable& Variable::operator*=(const Variable &other) {
+		if (type == NUMBER && other.type == NUMBER) {
+			set(asDouble() * other.asDouble());
+		} else {
+			set(NIL, false);
+		}
+		return *this;
+	}
+
+	Variable& Variable::operator*=(double num) {
+		if (type == NUMBER) {
+			set(asDouble() * num);
+		} else {
+			set(NIL, false);
+		}
+		return *this;
+	}
+
+	Variable& Variable::operator/=(const Variable &other) {
+		if (type == NUMBER && other.type == NUMBER) {
+			set(asDouble() / other.asDouble());
+		} else {
+			set(NIL, false);
+		}
+		return *this;
+	}
+
+	Variable& Variable::operator/=(double num) {
+		if (type == NUMBER) {
+			set(asDouble() / num);
+		} else {
+			set(NIL, false);
+		}
+		return *this;
+	}
+
+	Variable& Variable::operator++() {
+		if (type == NUMBER) {
+			set(asDouble() + 1);
+		} else {
+			set(NIL, false);
+		}
+		return *this;
+	}
+
+	Variable Variable::operator++(int unused) {
+		Variable var = *this;
+		++(*this);
+		return var;
+	}
+
+	Variable& Variable::operator--() {
+		if (type == NUMBER) {
+			set(asDouble() - 1);
+		} else {
+			set(NIL, false);
+		}
+		return *this;
+	}
+
+	Variable Variable::operator--(int unused) {
+		Variable var = *this;
+		--(*this);
+		return var;
+	}
+
+	Variable::operator double() const {
+		return asDouble();
+	}
+
+	Variable::operator std::string() const {
+		return asString();
+	}
+
+	Variable::operator char() const {
+		return asChar();
+	}
+
+	Variable::operator bool() const {
+		return asBool();
 	}
 
 	std::ostream& operator<<(std::ostream &stream, const Variable &var) {
