@@ -53,16 +53,42 @@ namespace savestuff {
 		//Saves the environment to a file.
 		void saveToFile(const std::string &filename);
 		//Gets the variable as the given type.
-		double asDouble();
-		std::string asString();
-		char asChar();
-		bool asBool();
+		double asDouble() const;
+		std::string asString() const;
+		char asChar() const;
+		bool asBool() const;
+		//Comparison.
+		bool compare(const Variable &other) const;
+		bool compare(double num) const;
+		bool compare(const std::string str) const;
+		bool compare(char ch) const;
+		bool compare(bool boolean) const;
+		bool compare(Variable *other) const;
+		bool compare(VariableType type) const;
+		VariableType getType() const;
 		//See at(Variable*) const.
 		Variable* operator[](Variable *key) const;
 		Variable* operator[](double num) const;
 		Variable* operator[](std::string str) const;
 		//Evaluates variables. Note that strings that .compare to 0 will match.
-		bool operator==(Variable &other) const;
+		bool operator==(const Variable &other) const;
+		bool operator==(double num) const;
+		bool operator==(const std::string str) const;
+		bool operator==(char ch) const;
+		bool operator==(bool boolean) const;
+		bool operator==(Variable *other) const;
+		bool operator==(VariableType type) const;
+		bool operator!=(const Variable &other) const;
+		bool operator!=(double num) const;
+		bool operator!=(const std::string str) const;
+		bool operator!=(char ch) const;
+		bool operator!=(bool boolean) const;
+		bool operator!=(Variable *other) const;
+		bool operator!=(VariableType type) const;
+		bool operator<(double num) const;
+		bool operator>(double num) const;
+		bool operator<=(double num) const;
+		bool operator>=(double num) const;
 		//Allows for printing to streams more easily.
 		friend std::ostream& operator<<(std::ostream &stream, const Variable &var);
 	protected:

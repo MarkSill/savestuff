@@ -130,7 +130,7 @@ namespace savestuff {
 				}
 			}
 		}
-		return nullptr;
+		return new Variable(NIL);
 	}
 
 	Variable* Variable::at(double num) const {
@@ -238,35 +238,23 @@ namespace savestuff {
 		out.close();
 	}
 
-	double Variable::asDouble() {
+	double Variable::asDouble() const {
 		return boost::get<double>(data);
 	}
 
-	std::string Variable::asString() {
+	std::string Variable::asString() const {
 		return boost::get<std::string>(data);
 	}
 
-	char Variable::asChar() {
+	char Variable::asChar() const {
 		return boost::get<char>(data);
 	}
 
-	bool Variable::asBool() {
+	bool Variable::asBool() const {
 		return boost::get<bool>(data);
 	}
 
-	Variable* Variable::operator[](Variable *key) const {
-		return at(key);
-	}
-
-	Variable* Variable::operator[](double num) const {
-		return at(num);
-	}
-
-	Variable* Variable::operator[](std::string str) const {
-		return at(str);
-	}
-
-	bool Variable::operator==(Variable &other) const {
+	bool Variable::compare(const Variable &other) const {
 		if (other.type != type) { //If the types are different, there's no way they can be the same.
 			return false;
 		}
@@ -286,6 +274,145 @@ namespace savestuff {
 		default:
 			return false; //Just in case.
 		}
+	}
+
+	bool Variable::compare(double num) const {
+		if (type == NUMBER) {
+			return asDouble() == num;
+		}
+		return false;
+	}
+
+	bool Variable::compare(const std::string str) const {
+		if (type == STRING) {
+			return asString().compare(str) == 0;
+		}
+		return false;
+	}
+
+	bool Variable::compare(char ch) const {
+		if (type == CHAR) {
+			return asChar() == ch;
+		}
+		return false;
+	}
+
+	bool Variable::compare(bool boolean) const {
+		if (type == BOOL) {
+			return asBool() == boolean;
+		}
+		return false;
+	}
+
+	bool Variable::compare(Variable *other) const {
+		if (other == nullptr) {
+			return type == NIL;
+		}
+		return compare(*other);
+	}
+
+	bool Variable::compare(VariableType type) const {
+		return this->type == type;
+	}
+
+	VariableType Variable::getType() const {
+		return type;
+	}
+
+	Variable* Variable::operator[](Variable *key) const {
+		return at(key);
+	}
+
+	Variable* Variable::operator[](double num) const {
+		return at(num);
+	}
+
+	Variable* Variable::operator[](std::string str) const {
+		return at(str);
+	}
+
+	bool Variable::operator==(const Variable &other) const {
+		return compare(other);
+	}
+
+	bool Variable::operator==(double num) const {
+		return compare(num);
+	}
+
+	bool Variable::operator==(const std::string str) const {
+		return compare(str);
+	}
+
+	bool Variable::operator==(char ch) const {
+		return compare(ch);
+	}
+
+	bool Variable::operator==(bool boolean) const {
+		return compare(boolean);
+	}
+
+	bool Variable::operator==(Variable *other) const {
+		return compare(other);
+	}
+
+	bool Variable::operator==(VariableType type) const {
+		return compare(type);
+	}
+
+	bool Variable::operator!=(const Variable &other) const {
+		return !compare(other);
+	}
+
+	bool Variable::operator!=(double num) const {
+		return !compare(num);
+	}
+
+	bool Variable::operator!=(const std::string str) const {
+		return !compare(str);
+	}
+
+	bool Variable::operator!=(char ch) const {
+		return !compare(ch);
+	}
+
+	bool Variable::operator!=(bool boolean) const {
+		return !compare(boolean);
+	}
+
+	bool Variable::operator!=(Variable *other) const {
+		return !compare(other);
+	}
+
+	bool Variable::operator!=(VariableType type) const {
+		return !compare(type);
+	}
+
+	bool Variable::operator<(double num) const {
+		if (type == NUMBER) {
+			return asDouble() < num;
+		}
+		return false;
+	}
+
+	bool Variable::operator>(double num) const {
+		if (type == NUMBER) {
+			return asDouble() > num;
+		}
+		return false;
+	}
+
+	bool Variable::operator<=(double num) const {
+		if (type == NUMBER) {
+			return asDouble() <= num;
+		}
+		return false;
+	}
+
+	bool Variable::operator>=(double num) const {
+		if (type == NUMBER) {
+			return asDouble() >= num;
+		}
+		return false;
 	}
 
 	std::ostream& operator<<(std::ostream &stream, const Variable &var) {
