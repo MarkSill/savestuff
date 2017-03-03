@@ -15,9 +15,12 @@ a_table = { //Tables are started using the "{" character.
 	{ //You can also nest tables.
 		"This is another table."
 	}
+	3 = "How will this appear in output?"
+	6 = "How about this?"
 }
 
-//Variables can also have wonky (by normal standards) names as a result of permissive naming.
+//Variables can also have wonky (by normal standards) names as a result of permissive naming. With newly introduced changes, keys can no longer start with numbers.
 //Personally, I would recommend NOT using names similar to the following:
 Does this work? = "hello"
+//This does not output correctly due to the key being converted to the number 32.
 32---- fgewg44 34t  fds/.?<?.,#@%)1473523 = "hello again"

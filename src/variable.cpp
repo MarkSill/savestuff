@@ -80,27 +80,59 @@ namespace savestuff {
 					ss << "{";
 					indent++;
 				}
+				std::map<unsigned int, Variable*> numbers;
+				std::map<std::string, Variable*> strings;
 				bool first = true;
 				for (auto kv : boost::get<std::map<Variable*, Variable*>>(data)) {
+					Variable *key = kv.first, *value = kv.second;
+					if (key->getType() == NUMBER) {
+						unsigned int size = key->asDouble();
+						numbers[size] = value;
+					} else if (key->getType() == STRING) {
+						strings[key->asString()] = value;
+					}
+				}
+				unsigned int last = 0;
+				for (auto kv : numbers) {
 					if (!file || !first) {
 						ss << "\n";
 					}
 					first = false;
+					unsigned int n = kv.first;
+					Variable *var = kv.second;
 					for (unsigned int i = 0; i < indent; i++) {
 						ss << "	"; //Indent with tabs to make the file prettier.
 					}
-					Variable *key = kv.first, *value = kv.second;
-					std::string kstr = key->toString(), vstr = value->toString();
-					//Add appropriate characters around strings and chars.
-					if (value->type == STRING) {
-						vstr = "\"" + vstr + "\"";
-					} else if (value->type == CHAR) {
-						vstr = "'" + vstr + "'";
+					if (last != n) {
+						ss << n << " = ";
+					} else {
+						last++;
 					}
-					if (key->type == STRING) { //Don't print the index if a number.
-						ss << kstr << " = ";
+					std::string vStr = var->toString();
+					if (var->type == STRING) {
+						vStr = '"' + vStr + '"';
+					} else if (var->type == CHAR) {
+						vStr = '\'' + vStr + '\'';
 					}
-					ss << vstr;
+					ss << vStr;
+				}
+				for (auto kv : strings) {
+					if (!file || !first) {
+						ss << "\n";
+					}
+					first = false;
+					std::string key = kv.first;
+					Variable *var = kv.second;
+					std::string vStr = var->toString();
+					for (unsigned int i = 0; i < indent; i++) {
+						ss << "	"; //Indent with tabs to make the file prettier.
+					}
+					if (var->type == STRING) {
+						vStr = '"' + vStr + '"';
+					} else if (var->type == CHAR) {
+						vStr = '\'' + vStr + '\'';
+					}
+					ss << key << " = " << vStr;
 				}
 				if (!file) {
 					indent--;
@@ -202,7 +234,13 @@ namespace savestuff {
 				vkey = new Variable(index++);
 				value = key;
 			} else { //Index given. Find the string representation of the value so we can convert it.
-				vkey = new Variable(key);
+				//We need to check if it's numerical or a string, however.
+				try {
+					double n = std::stod(key);
+					vkey = new Variable(n);
+				} catch (const std::invalid_argument &ex) {
+					vkey = new Variable(key);
+				}
 				value = line.substr(assignment + 1);
 				if (value.front() == ' ') {
 					value = value.substr(1);
