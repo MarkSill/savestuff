@@ -272,7 +272,7 @@ namespace savestuff {
 	void Variable::saveToFile(const std::string &filename) {
 		std::ofstream out;
 		out.open(filename);
-		out << toString(true); //Thanks to the toString function, this is easy.
+		out << toString(true) << "\n"; //Thanks to the toString function, this is easy.
 		out.close();
 	}
 
