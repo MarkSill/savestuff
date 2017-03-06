@@ -35,7 +35,7 @@ namespace savestuff {
 		//Sets the variable's type and stored information.
 		void set(VariableType type, boost::variant<double, std::string, char, bool, std::map<Variable*, Variable*>> data);
 		//Converts the variable to a string.
-		std::string toString(bool file = false) const;
+		std::string toString(bool file = false, bool minified = false) const;
 		//If a table, gets the variable at the given index. Returns null if not found.
 		Variable* at(Variable* key) const;
 		Variable* at(double num) const;
@@ -51,7 +51,7 @@ namespace savestuff {
 		//Loads an environment from the given file.
 		void loadFromFile(const std::string &filename);
 		//Saves the environment to a file.
-		void saveToFile(const std::string &filename);
+		void saveToFile(const std::string &filename, bool minified = false);
 		//Gets the variable as the given type.
 		double asDouble() const;
 		std::string asString() const;

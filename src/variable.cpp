@@ -55,7 +55,7 @@ namespace savestuff {
 		this->data = data;
 	}
 
-	std::string Variable::toString(bool file) const {
+	std::string Variable::toString(bool file, bool minified) const {
 		std::stringstream ss(""); //Create a stream for printing to.
 		switch (type) {
 		case NUMBER:
@@ -100,15 +100,21 @@ namespace savestuff {
 					first = false;
 					unsigned int n = kv.first;
 					Variable *var = kv.second;
-					for (unsigned int i = 0; i < indent; i++) {
-						ss << "	"; //Indent with tabs to make the file prettier.
+					if (!minified) {
+						for (unsigned int i = 0; i < indent; i++) {
+							ss << "\t"; //Indent with tabs to make the file prettier.
+						}
 					}
 					if (last != n) {
-						ss << n << " = ";
+						if (minified) {
+							ss << n << "=";
+						} else {
+							ss << n << " = ";
+						}
 					} else {
 						last++;
 					}
-					std::string vStr = var->toString();
+					std::string vStr = var->toString(false, minified);
 					if (var->type == STRING) {
 						vStr = '"' + vStr + '"';
 					} else if (var->type == CHAR) {
@@ -123,22 +129,30 @@ namespace savestuff {
 					first = false;
 					std::string key = kv.first;
 					Variable *var = kv.second;
-					std::string vStr = var->toString();
-					for (unsigned int i = 0; i < indent; i++) {
-						ss << "	"; //Indent with tabs to make the file prettier.
+					std::string vStr = var->toString(false, minified);
+					if (!minified) {
+						for (unsigned int i = 0; i < indent; i++) {
+							ss << "\t"; //Indent with tabs to make the file prettier.
+						}
 					}
 					if (var->type == STRING) {
 						vStr = '"' + vStr + '"';
 					} else if (var->type == CHAR) {
 						vStr = '\'' + vStr + '\'';
 					}
-					ss << key << " = " << vStr;
+					if (minified) {
+						ss << key << "=" << vStr;
+					} else {
+						ss << key << " = " << vStr;
+					}
 				}
 				if (!file) {
 					indent--;
 					ss << "\n";
-					for (unsigned int i = 0; i < indent; i++) {
-						ss << "	"; //Indent properly.
+					if (!minified) {
+						for (unsigned int i = 0; i < indent; i++) {
+							ss << "\t"; //Indent properly.
+						}
 					}
 					ss << "}";
 				}
@@ -148,7 +162,7 @@ namespace savestuff {
 			ss << "null";
 			break;
 		default:
-			ss << "???"; //Just in case. (This is used if type is somehow not initialized.)
+			ss << "\"error\""; //Just in case. (This is used if type is somehow not initialized.)
 			break;
 		}
 		return ss.str();
@@ -269,10 +283,10 @@ namespace savestuff {
 		}
 	}
 
-	void Variable::saveToFile(const std::string &filename) {
+	void Variable::saveToFile(const std::string &filename, bool minified) {
 		std::ofstream out;
 		out.open(filename);
-		out << toString(true) << "\n"; //Thanks to the toString function, this is easy.
+		out << toString(true, minified) << '\n'; //Thanks to the toString function, this is easy.
 		out.close();
 	}
 
